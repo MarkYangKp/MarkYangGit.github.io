@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>部署大模型到微信公众号 - MarkYangBLOG</title>
+
+  
+    <meta name="description" content="部署大模型到微信公众号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署大模型到微信公众号">
+<meta property="og:url" content="http://example.com/2023/09/09/GPT-ON-WeChat/index.html">
+<meta property="og:site_name" content="MarkYangBLOG">
+<meta property="og:description" content="部署大模型到微信公众号">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-09T07:57:54.000Z">
+<meta property="article:modified_time" content="2023-09-09T07:58:50.857Z">
+<meta property="article:author" content="MarkYangKp">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">MarkYangBLOG</div><div class="sub cap">Read More Note</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">部署大模型到微信公众号</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E6%B3%A8%E5%86%8C%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="toc-text">第一步注册微信公众号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%AE%AF%E9%A3%9E%E7%A7%91%E5%A4%A7%E7%9A%84%E8%B4%A6%E5%8F%B7"><span class="toc-text">注册讯飞科大的账号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81"><span class="toc-text">克隆项目代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%A0%B8%E5%BF%83%E4%BE%9D%E8%B5%96"><span class="toc-text">安装核心依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%E4%BE%9D%E8%B5%96-%E5%8F%AF%E9%80%89%EF%BC%8C%E5%BB%BA%E8%AE%AE%E5%AE%89%E8%A3%85-%EF%BC%9A"><span class="toc-text">拓展依赖 (可选，建议安装)：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E9%85%8D%E7%BD%AE"><span class="toc-text">微信公众号配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86%E5%85%AC%E4%BC%97%E5%8F%B7%E6%8E%A5%E5%85%A5%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="toc-text">将公众号接入小程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C"><span class="toc-text">运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C"><span class="toc-text">本地运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2"><span class="toc-text">服务器部署</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">发布于&nbsp;<time datetime="2023-09-09T07:57:54.000Z">2023-09-09</time></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>部署大模型到微信公众号</span></h1>
+<h1 id="部署大模型到微信公众号"><a href="#部署大模型到微信公众号" class="headerlink" title="部署大模型到微信公众号"></a>部署大模型到微信公众号</h1><h2 id="第一步注册微信公众号"><a href="#第一步注册微信公众号" class="headerlink" title="第一步注册微信公众号"></a>第一步注册微信公众号</h2><p>关于怎么注册微信公众号这里跳过，自行查找教程。</p>
+<h2 id="注册讯飞科大的账号"><a href="#注册讯飞科大的账号" class="headerlink" title="注册讯飞科大的账号"></a>注册讯飞科大的账号</h2><p><strong>注册账号后并且获得ApiId ApiKey Api Secret</strong><br>这里只需要简单的申请即可获得，具体操作略</p>
+<h2 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h2><h3 id="克隆项目代码"><a href="#克隆项目代码" class="headerlink" title="克隆项目代码"></a>克隆项目代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/zhayujie/chatgpt-on-wechat</span><br><span class="line">cd chatgpt-on-wechat/</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装核心依赖"><a href="#安装核心依赖" class="headerlink" title="安装核心依赖"></a>安装核心依赖</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r requirements.txt</span><br></pre></td></tr></table></figure>
+<h3 id="拓展依赖-可选，建议安装-："><a href="#拓展依赖-可选，建议安装-：" class="headerlink" title="拓展依赖 (可选，建议安装)："></a>拓展依赖 (可选，建议安装)：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r requirements-optional.txt</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>tiktoken</code>要求python版本在3.8以上，它用于精确计算会话使用的<code>tokens</code>数量，强烈建议安装。</p>
+<p>使用<code>google</code>或<code>baidu</code>语音识别需安装<code>ffmpeg</code>，</p>
+<p>默认的<code>openai</code>语音识别不需要安装<code>ffmpeg</code>。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置文件的模板在根目录的config-template.json中，需复制该模板创建最终生效的 config.json 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp config-template.json config.json</span><br></pre></td></tr></table></figure>
+<p>然后在config.json中填入配置</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xunfei&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;xunfei_app_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;appid&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;xunfei_api_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;apikey&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;xunfei_api_secret&quot;</span><span class="punctuation">:</span> <span class="string">&quot;apisecret&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;channel_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;wx&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;proxy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;hot_reload&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;single_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;猫猫&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;猫&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;image_create_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;画&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;看&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;找&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;group_speech_recognition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;voice_reply_voice&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;conversation_max_tokens&quot;</span><span class="punctuation">:</span> <span class="number">1000</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;expires_in_seconds&quot;</span><span class="punctuation">:</span> <span class="number">3600</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;character_desc&quot;</span><span class="punctuation">:</span> <span class="string">&quot;你是猫猫, 一个大型语言模型, 你旨在回答并解决人们的任何问题，并且可以使用多种语言与人交流。请遵循法律法规&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;temperature&quot;</span><span class="punctuation">:</span> <span class="number">0.7</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;top_p&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;subscribe_msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;喵~感谢您的关注！\n这里是猫猫，可以自由对话。\n支持语音输入。\n支持图片输入(后续OTA支持)。\n支持图片输出(后续OTA支持)，画字开头的消息将按要求创作图片(后续OTA支持)。\n支持tool、角色扮演和文字冒险等丰富的插件（后续OTA支持）。\n输入 猫猫 #help 查看详细指令。&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;use_linkai&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="微信公众号配置"><a href="#微信公众号配置" class="headerlink" title="微信公众号配置"></a>微信公众号配置</h2><p>先在服务器下载下面这个脚本模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install web.py</span><br><span class="line">pip3 install wechatpy</span><br></pre></td></tr></table></figure>
+
+<h3 id="将公众号接入小程序"><a href="#将公众号接入小程序" class="headerlink" title="将公众号接入小程序"></a>将公众号接入小程序</h3><p>然后根据接入指南的说明，在微信公众平台的“设置与开发”-“基本配置”-“服务器配置”中填写服务器地址URL和令牌Token。URL填写格式为<a target="_blank" rel="noopener" href="http://url/wx%EF%BC%8C%E5%8F%AF%E4%BD%BF%E7%94%A8IP%EF%BC%88%E6%88%90%E5%8A%9F%E5%87%A0%E7%8E%87%E7%9C%8B%E8%84%B8%EF%BC%89%EF%BC%8CToken%E6%98%AF%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%BC%96%E7%9A%84%E4%B8%80%E4%B8%AA%E7%89%B9%E5%AE%9A%E7%9A%84%E4%BB%A4%E7%89%8C%E3%80%82%E6%B6%88%E6%81%AF%E5%8A%A0%E8%A7%A3%E5%AF%86%E6%96%B9%E5%BC%8F%E5%A6%82%E6%9E%9C%E9%80%89%E6%8B%A9%E4%BA%86%E9%9C%80%E8%A6%81%E5%8A%A0%E5%AF%86%E7%9A%84%E6%A8%A1%E5%BC%8F%EF%BC%8C%E9%9C%80%E8%A6%81%E5%9C%A8%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%A1%AB%E5%86%99wechatmp_aes_key%E3%80%82">http://url/wx，可使用IP（成功几率看脸），Token是你自己编的一个特定的令牌。消息加解密方式如果选择了需要加密的模式，需要在配置中填写wechatmp_aes_key。</a></p>
+<p>相关的服务器验证代码已经写好，你不需要再添加任何代码。你只需要在本项目根目录的config.json中添加</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;channel_type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;wechatmp&quot;</span><span class="punctuation">,</span>    </span><br><span class="line"><span class="attr">&quot;wechatmp_token&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx&quot;</span><span class="punctuation">,</span>       </span><br><span class="line"><span class="attr">&quot;wechatmp_port&quot;</span><span class="punctuation">:</span> <span class="number">8080</span><span class="punctuation">,</span>          </span><br><span class="line"><span class="attr">&quot;wechatmp_app_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx&quot;</span><span class="punctuation">,</span>      </span><br><span class="line"><span class="attr">&quot;wechatmp_app_secret&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx&quot;</span><span class="punctuation">,</span>  </span><br><span class="line"><span class="attr">&quot;wechatmp_aes_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span>         </span><br><span class="line"><span class="attr">&quot;single_chat_prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>     </span><br><span class="line"><span class="attr">&quot;single_chat_reply_prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span> </span><br><span class="line"><span class="attr">&quot;plugin_trigger_prefix&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&amp;&quot;</span><span class="punctuation">,</span>   </span><br></pre></td></tr></table></figure>
+<p>然后运行python3 app.py启动web服务器。这里会默认监听8080端口，但是微信公众号的服务器配置只支持80&#x2F;443端口，有两种方法来解决这个问题。第一个是推荐的方法，使用端口转发命令将80端口转发到8080端口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080</span><br><span class="line">sudo iptables-save &gt; /etc/iptables/rules.v4</span><br></pre></td></tr></table></figure>
+
+<p>如果第二行命令无效，则只执行第一行命令即可，但是若服务器重启，需要重新输入第一行的命令</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><p>如果是开发机 本地运行，直接在项目根目录下执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 app.py</span><br></pre></td></tr></table></figure>
+<p>即可</p>
+<h3 id="服务器部署"><a href="#服务器部署" class="headerlink" title="服务器部署"></a>服务器部署</h3><p>使用nohup命令在后台运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">touch nohup.out                                   # 首次运行需要新建日志文件  </span><br><span class="line">nohup python3 app.py &amp; tail -f nohup.out          # 在后台运行程序并通过日志输出二维码</span><br></pre></td></tr></table></figure>
+<p>扫码登录后程序即可运行于服务器后台，此时可通过 <code>ctrl+c</code> 关闭日志，不会影响后台程序的运行。使用 <code>ps -ef | grep app.py | grep -v grep</code>命令可查看运行于后台的进程，如果想要重新启动程序可以先 kill 掉对应的进程。日志关闭后如果想要再次打开只需输入 <code>tail -f nohup.out</code>。此外，<code>scripts </code>目录下有一键运行、关闭程序的脚本供使用。</p>
+
+
+
+<div class="article-footer reveal fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/08/31/Unity%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">Unity碰撞检测</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.19.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.19.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.css","js":"https://unpkg.com/swiper@8.4.5/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
